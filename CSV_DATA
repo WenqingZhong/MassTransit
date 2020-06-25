@@ -57,6 +57,6 @@ def get_csv(url,limit):
         get_data(links[i],i)
     return
 
-get_csv(url,50)    
+get_csv(url,90)    
 
 
