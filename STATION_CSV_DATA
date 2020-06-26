@@ -11,7 +11,7 @@ from urllib.parse import urlparse, urljoin
 from itertools import islice
 import pandas as pd
 import os
-
+import csv
 
 
 url = "http://web.mta.info/developers/turnstile.html"
@@ -21,7 +21,7 @@ def is_valid(url):
     return bool(parsed.netloc) and bool(parsed.scheme)
 
 def get_all_urls(url, limit):
-    
+#find all urls that stores turnstile data
     if(is_valid(url)==False):
         print("ERROR WITH URL INPUT")
        
@@ -37,7 +37,7 @@ def get_all_urls(url, limit):
     return urls
 
 
-def get_data(url,i):
+def get_one_csv(url,i):
     r = requests.get(url)
     with open('data%s.txt'%i, 'w') as file:
         try:
@@ -50,13 +50,41 @@ def get_data(url,i):
     os.remove("data%s.txt"%i)
     return
 
-       
-def get_csv(url,limit):
+
+def get_all_csv(url,limit):
     links=get_all_urls(url, limit)
     for i in range(len(links)):
-        get_data(links[i],i)
+        get_one_csv(links[i],i)        
+    return len(links)
+
+
+def get_station(station,numofcsv): 
+    with open('%s.csv'%station, 'w',newline='') as csvfile: 
+        with open('data0.csv') as head:
+            headreader = csv.reader(head)  
+            head= next(headreader)
+            writer = csv.writer(csvfile, delimiter=",", quoting=csv.QUOTE_NONE) 
+            writer.writerow(head)
+        for i in range(numofcsv):
+            with open('data%s.csv'%i) as f_obj:
+                reader = csv.reader(f_obj)  
+                for line in reader:      
+                    if station in line:
+                        writer.writerow(line)
     return
 
-get_csv(url,90)    
+
+def get_final_station_data(url,limit,station):
+    numofcsv=get_all_csv(url,limit)
+    get_station(station,numofcsv)
+    
+    for i in range(numofcsv):
+        os.remove("data%s.csv"%i)
+    return
+
+get_final_station_data(url,50,"V.CORTLANDT PK")
+
+
+
 
 
