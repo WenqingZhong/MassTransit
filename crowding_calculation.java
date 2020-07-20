@@ -57,8 +57,8 @@ public class CrowdLevel {
 		# entries in the previous function.					#
 		
 		new int delayTime = getDelayTime(station,trainline,date,time);
-		# This function produces an estimate of the amount of minutes 	#
-		# a delay typically might have. I'm not sure how to calculate it	#
+		# This function produces an estimate of the amount of minutes 		#
+		# a delay typically might have. I am not sure how to calculate it	#
 		# yet, but here is where we will use it.				#
 		
 		new int totalMinutes = 60 * 4;
@@ -90,6 +90,12 @@ public class CrowdLevel {
 		
 		public  double getCrowdLevel() { return crowdLevel; }
 		public double getDelayedCrowdLevel() { return dCrowdLevel; }
+		
+		# This was written in Java but we could easily translate to python.	#
+		# In java the way we would call it is by creating a crowd object	#
+			# Crowd crowd = new Crowd(station,trainline,date,time);		#
+		# and then calling the methods to get the crowd calculations for it	#
+			# return crowd.getCrowdLevel();					#
 			
 		
 		
