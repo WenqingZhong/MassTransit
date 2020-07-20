@@ -3,14 +3,14 @@ import crowdingtools.getTrainsCount;
 import crowdingtools.getDelayTime;
 import crowdingtools.getLargeCrowd;
 
-public class CrowdLevel {
+public class Crowd {
 
 	private String station;
 	private String trainline;
 	private String date;
 	private String time;
 	
-	public CrowdLevel(String station, String trainline, String date, String time) {
+	public Crowd(String station, String trainline, String date, String time) {
 	
 		this.station = station;
 		this.trainline = trainline;
