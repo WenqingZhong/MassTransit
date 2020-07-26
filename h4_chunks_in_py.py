@@ -206,5 +206,5 @@ def entries_exits_in_4h_chunks(filename,continuous):
 #sort_by_date("01-00-00")
 #cal_ent_exi("01-00-00","20:00:00","00:00:00")
 #get_all_entries_exits("01-00-00-Mon","16:00:00","20:00:00")
-entries_exits_in_4h_chunks("01-00-00-Mon",True)
+#entries_exits_in_4h_chunks("01-00-00-Mon",True)
     

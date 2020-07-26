@@ -157,8 +157,14 @@ def get_SCPs(linename):
         file.write(str(keys))                
     return SCPnames
 
+#method called by user
+def get_final_station_data(numofweek,station):
+    url = "http://web.mta.info/developers/turnstile.html"# the turnstile data website url
+    get_final_station_data_helper(url, numofweek, station)
+    return
 
-def get_final_station_data(url,numofweek,station):
+#helper method
+def get_final_station_data_helper(url,numofweek,station):
     #input: url for the turnstile website, how many weeks' data that you need, and which station you want to work with
     numofcsv=get_all_csv(url,numofweek)
     get_station(station,numofcsv)
@@ -217,10 +223,10 @@ def get_one_SCP(linename,SCPname):
         return
 
 
-get_final_station_data(url,3,"96 ST")
+#get_final_station_data(url,3,"96 ST")
 #eg. get "96 ST" station's data for the last 3 weeks
 
-get_one_line("96 ST","BC")
+#get_one_line("96 ST","BC")
 #ef. get line"BC" in "96 ST"
 
-get_one_SCP("BC","01-00-00")
+#get_one_SCP("BC","01-00-00")

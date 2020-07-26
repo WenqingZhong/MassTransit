@@ -71,5 +71,5 @@ def sort_all_days(stationname):
         sort_one_day(stationname,days,i)    
     return
       
-sort_all_days("01-00-00")#this is a file that only includes data for 01-00-00 SCP, for how to get the file please go to CSV.DATA.py
+#sort_all_days("01-00-00")#this is a file that only includes data for 01-00-00 SCP, for how to get the file please go to CSV.DATA.py
 
