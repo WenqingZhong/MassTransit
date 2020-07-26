@@ -44,10 +44,6 @@ import numpy as np
 
 
 
-url = "http://web.mta.info/developers/turnstile.html"# the turnstile data website url
-
-
-
 def is_valid(url):#check if the url is valid
 
     parsed = urlparse(url)
@@ -165,10 +161,8 @@ def get_station(station,linename,numofcsv): #get turnstile data of a certain sta
                 reader = csv.reader(f_obj)  
                 
                 for line in reader: 
-                    temp = line.spilt(",")
-                    print(temp)
 
-                    if ((station in line) and (linename in temp[4])):
+                    if ((station in line) and (linename in line[5])):
 
                         writer.writerow(line)
 
