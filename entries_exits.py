@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 def get_file(path):                     #creates a dataframe from a single station turnstile csv file
     df=pd.read_csv(path)
     return df
