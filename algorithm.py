@@ -7,7 +7,7 @@ from datetime import datetime
 import numpy as np
 import os
 import sys
-sys.path.insert(0, os.path.abspath(r'C:\Users\Raayan\Documents\Github\MassTransit'))
+sys.path.insert(0, os.path.abspath(r'/Users/mehrkaur/Documents/projects/subway/MassTransit/'))
 from get_station_csv import get_final_station_data
 from sort_by_week_day import sort_all_days
 from h4_chunks_in_py import entries_exits_in_4h_chunks
@@ -19,8 +19,8 @@ from entries_exits import get_entry_exit_given_hour
 def get_crowds(date,time,stop_id):
     requestedDay = date.weekday()
     weekDays = ("Mon","Tue","Wed","Thu","Fri","Sat","Sun")
-    stops_path = r'C:\Users\Raayan\Documents\Github\MassTransit\google_transit\stop_times.txt'
-    trips_path = r'C:\Users\Raayan\Documents\Github\MassTransit\google_transit\trips.txt'
+    stops_path = r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/stop_times.txt'
+    trips_path = r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/trips.txt'
     #stop_id = "117" #HARDCODED for 96th, our pilot
     
     #train schedule is recorded only between 6 am ('06') and 11 pm ('23') to make room for cleaning
@@ -59,15 +59,15 @@ def get_crowds(date,time,stop_id):
         
     totalEntries = 0
     totalExits = 0 #throw-away value
-    predictedCrowds = np.array([0,0]) #HARDCODED for 96th. 2 platforms, 2 crowd predictions.
+    predictedCrowds = np.array([0,0]) #HARDCODED 2 platforms, 2 crowd predictions.
 
     if(requestedDay <= 4): #is a work day
         sumCrowds = np.array([0,0]) #HARDCODED for 96
         for i in range (0,5):
             filename = weekDays[i] + ".csv"
-            path = r"C:/Users/Raayan/Documents/Github/MassTransit/" + filename
+            path = r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
             totalEntries, totalExits = get_entry_exit_given_hour(path,time_input) 
-            entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th
+            entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th and 116th
 
             tempCrowds = entriesPerPlatform / trainsPerPlatform
             sumCrowds = sumCrowds + tempCrowds
@@ -76,10 +76,48 @@ def get_crowds(date,time,stop_id):
 
     else: #is weekend
         filename = weekDays[requestedDay] + ".csv"
-        path = r"C:/Users/Raayan/Documents/Github/MassTransit/" + filename
+        path = r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
         totalEntries, totalExits = get_entry_exit_given_hour(path,time_input)
-        entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th
+        entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th and 116th
 
         predictedCrowds = entriesPerPlatform / trainsPerPlatform
     
     return totalEntries, predictedCrowds
+
+def grade_crowds(predictedCrowds):
+    platformDensities = np.array([0,0])
+    platform_length = 510
+    platform_width = 12.5
+    platform_size = (platform_length * platform_width) / 2 #assume half the platform is unusable space (walls, stairs, etc)
+    if (predictedCrowds.size != 0):
+        #length = len(predictedCrowds)
+        platformDensities = np.array([0,0]) #HARDCODED, 2 platforms = 2 elements
+        for i in range(0,predictedCrowds.size):
+            if predictedCrowds[i]: 
+                density = platform_size / predictedCrowds[i] #square feet per person
+            else: density = 0
+            platformDensities[i] = density
+    else: platformDensities = predictedCrowds
+
+    platformGrades = np.array(["0","0"]) #0 represents no data
+    green = 64 #at least 8 feet per person in all directions
+    yellow = 36 #at least 6 feet (CDC recommendation) 
+    orange = 16 #at least 4 feet 
+    if (platformDensities.size != 0):
+        #length = len(platformDensities)
+        platformGrades = np.array([0,0])
+        for i in range(0,platformDensities.size):
+            if platformDensities[i]:
+                if(platformDensities[i] >= green):
+                    platformGrades[i] = 4
+                elif(platformDensities[i] >= yellow):
+                    platformGrades[i] = 3
+                elif(platformDensities[i] >= orange):
+                    platformGrades[i] = 2
+                else:
+                    platformGrades[i] = 1
+
+            else:
+                platformGrades[i] = 0
+    return platformGrades
+                
