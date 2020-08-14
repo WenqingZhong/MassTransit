@@ -1,2 +1,1 @@
-# Flask-Project
-1006 final project
+To operate, run app.py in a console. Copy returned address into a browser. From there, can be used like a website.
