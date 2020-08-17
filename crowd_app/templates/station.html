@@ -1,0 +1,24 @@
+<h1>View Station Crowding</h1>
+
+<label for="stations">Choose a station:</label>
+
+<select name="station" id="station">
+  <option value="96th St">96 St</option>
+  <option value="116th St - Columbia University">116 St - Columbia University</option>
+</select>
+
+<br><br>
+
+<form>
+    <label for="times">Select a date and time:</label>
+    <input type="datetime-local" id="datetime" name="datetime">
+  </form>
+
+<br>
+
+ <ul>
+    {% for station_item in all_station_items %}
+        <li>{{ station_item.content }}</li>
+    {% endfor %}
+ </ul> 
+
