@@ -7,7 +7,7 @@ from datetime import datetime
 import numpy as np
 import os
 import sys
-sys.path.insert(0, os.path.abspath(r'/Users/mehrkaur/Documents/projects/subway/MassTransit/'))
+sys.path.insert(0, os.path.abspath(r'C:/Users/Raayan/Documents/GitHub/MassTransit/'))#r'/Users/mehrkaur/Documents/projects/subway/MassTransit/'))
 from get_station_csv import get_final_station_data
 from sort_by_week_day import sort_all_days
 from h4_chunks_in_py import entries_exits_in_4h_chunks
@@ -16,11 +16,11 @@ from entries_exits import get_entry_exit_given_hour
 
 
 #stop_id is 120 for 96th Street, 117 for 116th Street - both on the 1 line
-def get_crowds(date,time,stop_id):
+def get_crowds(date,time,stop_id,station):
     requestedDay = date.weekday()
     weekDays = ("Mon","Tue","Wed","Thu","Fri","Sat","Sun")
-    stops_path = r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/stop_times.txt'
-    trips_path = r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/trips.txt'
+    stops_path = r'C:/Users/Raayan/Documents/GitHub/MassTransit/google_transit/stop_times.txt'#r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/stop_times.txt'
+    trips_path = r'C:/Users/Raayan/Documents/GitHub/MassTransit/google_transit/trips.txt'#r'/Users/mehrkaur/Documents/projects/subway/MassTransit/google_transit/trips.txt'
     #stop_id = "117" #HARDCODED for 96th, our pilot
     
     #train schedule is recorded only between 6 am ('06') and 11 pm ('23') to make room for cleaning
@@ -65,18 +65,25 @@ def get_crowds(date,time,stop_id):
         sumCrowds = np.array([0,0]) #HARDCODED for 96
         for i in range (0,5):
             filename = weekDays[i] + ".csv"
-            path = r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
+            path = r'C:/Users/Raayan/Documents/GitHub/MassTransit/'+filename #r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
             totalEntries, totalExits = get_entry_exit_given_hour(path,time_input) 
-            entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th and 116th
+            if(station == '96 ST'): #currently we are only working with one sheet
+                entriesPerPlatform = (totalEntries / 2) + totalExits #HARDCODED, num. platforms at 96th, and transfer split
 
-            tempCrowds = entriesPerPlatform / trainsPerPlatform
-            sumCrowds = sumCrowds + tempCrowds
+                tempCrowds = entriesPerPlatform / trainsPerPlatform
+                sumCrowds = sumCrowds + tempCrowds
+
+            else:
+                entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at non-transfer stations
+
+                tempCrowds = entriesPerPlatform / trainsPerPlatform
+                sumCrowds = sumCrowds + tempCrowds
 
         predictedCrowds = sumCrowds / 5 #avg over 5 work days
 
     else: #is weekend
         filename = weekDays[requestedDay] + ".csv"
-        path = r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
+        path = r'C:/Users/Raayan/Documents/Github/MassTransit/'+filename#r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
         totalEntries, totalExits = get_entry_exit_given_hour(path,time_input)
         entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th and 116th
 

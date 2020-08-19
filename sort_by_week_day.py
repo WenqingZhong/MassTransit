@@ -44,25 +44,26 @@ def get_week_days(filename):
      #'days' is a dictionary with week days as keys and csv line numbers as values
 
 def sort_one_day(stationname,days,k):
+    
     #create a csv file for one week day
-      keys= list(days.keys())
-      with open('%s.csv'%stationname,'r') as stationfile:
+    keys= list(days.keys())    
+    with open('%s.csv'%stationname,'r') as stationfile:
         reader = csv.reader(stationfile) 
         head=next(reader)
         count=0
         with open('%s.csv'%keys[k], 'w',newline='') as csvfile:
-                writer = csv.writer(csvfile,quoting=csv.QUOTE_NONE)
-                writer.writerow(head)
-                c=days.get(keys[k])
-                for row in reader:
-                    count=count+1
-                    if(count in c):
-                        try:
-                            writer.writerow(row)
-                        except:
-                            return False               
-        stationfile.seek(0)  
-      return
+            writer = csv.writer(csvfile,quoting=csv.QUOTE_NONE)
+            writer.writerow(head)
+            c=days.get(keys[k])
+            for row in reader:
+                count=count+1
+                if(count in c):
+                    try:
+                        writer.writerow(row)
+                    except:
+                        return False               
+        stationfile.seek(0)    
+    return
  
 def sort_all_days(stationname):
     #create csv files for all week days
