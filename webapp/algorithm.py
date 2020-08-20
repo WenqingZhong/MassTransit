@@ -67,10 +67,17 @@ def get_crowds(date,time,stop_id):
             filename = weekDays[i] + ".csv"
             path = r"/Users/mehrkaur/Documents/projects/subway/MassTransit/" + filename
             totalEntries, totalExits = get_entry_exit_given_hour(path,time_input) 
-            entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at 96th and 116th
+            if(station == '96 ST'): #currently we are only working with one sheet
+                entriesPerPlatform = (totalEntries / 2) + totalExits #HARDCODED, num. platforms at 96th, and transfer split
 
-            tempCrowds = entriesPerPlatform / trainsPerPlatform
-            sumCrowds = sumCrowds + tempCrowds
+                tempCrowds = entriesPerPlatform / trainsPerPlatform
+                sumCrowds = sumCrowds + tempCrowds
+
+            else:
+                entriesPerPlatform = totalEntries / 2 #HARDCODED, num. platforms at non-transfer stations
+
+                tempCrowds = entriesPerPlatform / trainsPerPlatform
+                sumCrowds = sumCrowds + tempCrowds
 
         predictedCrowds = sumCrowds / 5 #avg over 5 work days
 
