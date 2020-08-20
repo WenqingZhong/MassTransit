@@ -24,7 +24,7 @@ def f96th():
     
     dateRequest = datetime.date(datetime.now())
     timeRequest = datetime.time(datetime.now())
-    entries, crowdSize = get_crowds(dateRequest,timeRequest,'120')
+    entries, crowdSize = get_crowds(dateRequest,timeRequest,'120','96 ST')
     crowdRank = grade_crowds(crowdSize)
     northNum = str(crowdSize[0])
     northRisk = str(crowdRank[0])
